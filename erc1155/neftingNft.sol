@@ -11,7 +11,7 @@ contract NeftingNft is ERC1155, Pausable, Ownable, ERC2981 {
     Counters.Counter private _tokenIds;
     uint96 maxRoyalties;
 
-    constructor() public ERC1155("https://api.nefting.com/nft-metadata/ethereum/{id}") {
+    constructor() public ERC1155("https://api.nefting.com/nft-metadata/eth/{id}") {
         // Set maxRoyalties to 50%
         maxRoyalties = 5000;
     }
