@@ -25,6 +25,26 @@ contract NeftingNft is ERC1155, Pausable, Ownable, ERC2981 {
         _setTokenRoyalty(id, msg.sender, feeNumerator);
     }
 
+    function mintBatch(uint256[] memory amounts, uint96 feeNumerator) public whenNotPaused {
+        require(feeNumerator <= maxRoyalties, "Royalties can't exceed maxRoyalties.");
+        require(amounts.length > 0, "Amounts cannot be empty.");
+
+        uint256[] memory ids = new uint256[](amounts.length);
+
+        for (uint256 i = 0; i < amounts.length; i++) {
+            _tokenIds.increment();
+            uint256 id = _tokenIds.current();
+
+            ids[i] = id;
+        }
+
+        _mintBatch(msg.sender, ids, amounts, "");
+
+        for (uint256 i = 0; i < ids.length; i++) {
+            _setTokenRoyalty(ids[i], msg.sender, feeNumerator);
+        }
+    }
+
     function burn(address from, uint256 id, uint256 amount) public whenNotPaused {
         _burn(from, id, amount);
     }
